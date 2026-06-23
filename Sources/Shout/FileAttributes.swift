@@ -1,17 +1,16 @@
 //
 //  FileAttributes.swift
-//  
+//
 //
 //  Created by Kyle Ishie on 12/10/19.
 //
 
-import Foundation
 import CSSH
+import Foundation
 
 public struct FileAttributes {
-    
     public let fileType: FileType
-    
+
     public let size: UInt64
 
     public let userId: UInt
@@ -23,7 +22,7 @@ public struct FileAttributes {
     public let lastAccessed: Date
 
     public let lastModified: Date
-    
+
     init?(attributes: LIBSSH2_SFTP_ATTRIBUTES) {
         guard let fileType = FileType(rawValue: Int32(attributes.permissions)) else { return nil }
         self.fileType = fileType
@@ -34,6 +33,4 @@ public struct FileAttributes {
         lastAccessed = Date(timeIntervalSince1970: Double(attributes.atime))
         lastModified = Date(timeIntervalSince1970: Double(attributes.mtime))
     }
-    
 }
-

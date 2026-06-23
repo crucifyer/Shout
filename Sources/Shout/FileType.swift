@@ -1,12 +1,12 @@
 //
 //  FileType.swift
-//  
+//
 //
 //  Created by Kyle Ishie on 12/10/19.
 //
 
-import Foundation
 import CSSH
+import Foundation
 
 public enum FileType {
     case link
@@ -37,6 +37,4 @@ public enum FileType {
             return nil
         }
     }
-    
 }
-

@@ -9,14 +9,13 @@ import CSSH
 import struct Foundation.Data
 
 enum ReadWriteProcessor {
-    
     enum ReadResult {
         case data(Data)
         case eagain
         case done
         case error(SSHError)
     }
-    
+
     static func processRead(result: Int, buffer: inout [Int8], session: OpaquePointer) -> ReadResult {
         if result > 0 {
             let data = Data(bytes: &buffer, count: result)
@@ -29,21 +28,20 @@ enum ReadWriteProcessor {
             return .error(SSHError.codeError(code: Int32(result), session: session))
         }
     }
-    
+
     enum WriteResult {
         case written(Int)
         case eagain
         case error(SSHError)
     }
-    
+
     static func processWrite(result: Int, session: OpaquePointer) -> WriteResult {
         if result >= 0 {
-            return .written(result)
+            .written(result)
         } else if result == LIBSSH2_ERROR_EAGAIN {
-            return .eagain
+            .eagain
         } else {
-            return .error(SSHError.codeError(code: Int32(result), session: session))
+            .error(SSHError.codeError(code: Int32(result), session: session))
         }
     }
-    
 }
