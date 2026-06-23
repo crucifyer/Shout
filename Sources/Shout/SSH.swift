@@ -146,10 +146,9 @@ public class SSH {
         while dataLeft {
             switch channel.readData() {
             case let .data(data):
-                guard let str = String(data: data, encoding: .utf8) else {
-                    throw SSHError.genericError("SSH failed to create string using UTF8 encoding")
+                if let str = String(data: data, encoding: .utf8) {
+                    output(str)
                 }
-                output(str)
             case .done:
                 dataLeft = false
             case .eagain:
