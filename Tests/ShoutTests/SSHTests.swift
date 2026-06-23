@@ -31,6 +31,26 @@ class ShoutTests: XCTestCase {
         XCTAssertTrue(contents.contains("bin"))
     }
 
+    func testExecute() async throws {
+        let ssh = try SSH(host: ShoutServer.host)
+        try ssh.authenticate(username: ShoutServer.username, authMethod: ShoutServer.authMethod)
+
+        var foundBin = false
+        var foundDev = false
+        var foundOpt = false
+
+        let status = try ssh.execute("ls /") { output in
+            if output.contains("bin") { foundBin = true }
+            if output.contains("dev") { foundDev = true }
+            if output.contains("opt") { foundOpt = true }
+        }
+
+        XCTAssertEqual(status, 0)
+        XCTAssertTrue(foundBin)
+        XCTAssertTrue(foundDev)
+        XCTAssertTrue(foundOpt)
+    }
+
     func testConnect() throws {
         try SSH.connect(host: ShoutServer.host, username: ShoutServer.username, authMethod: ShoutServer.authMethod) { (ssh) in
             let (result, contents) = try ssh.capture("ls /")
