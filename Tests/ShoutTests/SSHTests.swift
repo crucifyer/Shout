@@ -9,8 +9,10 @@ import Shout
 import XCTest
 
 struct ShoutServer {
-    static let host = ""
-    static let username = ""
+    static let host = "localhost"
+    static let username: String = {
+        ProcessInfo.processInfo.environment["USER"] ?? ""
+    }()
     static let password = ""
     static let agentAuth = SSHAgent()
     static let passwordAuth = SSHPassword(password)

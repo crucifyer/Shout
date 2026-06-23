@@ -14,15 +14,15 @@ class SFTPTests: XCTestCase {
         try SSH.connect(host: ShoutServer.host, username: ShoutServer.username, authMethod: ShoutServer.authMethod) { (ssh) in
             let sftp = try ssh.openSftp()
             
-            let destinationUrl = URL(fileURLWithPath: "/tmp/shout_hostname")
-            
-            if try destinationUrl.checkResourceIsReachable() == true {
+            let destinationUrl = URL(fileURLWithPath: "/tmp/shout_man.conf")
+
+            if FileManager.default.fileExists(atPath: destinationUrl.path) {
                 try FileManager.default.removeItem(at: destinationUrl)
             }
             
             XCTAssertFalse(FileManager.default.fileExists(atPath: destinationUrl.path))
             
-            try sftp.download(remotePath: "/etc/hostname", localURL: destinationUrl)
+            try sftp.download(remotePath: "/etc/man.conf", localURL: destinationUrl)
             
             XCTAssertTrue(FileManager.default.fileExists(atPath: destinationUrl.path))
             XCTAssertTrue(try String(contentsOf: destinationUrl).count > 0)
