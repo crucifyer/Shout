@@ -131,12 +131,12 @@ class SFTPTests: XCTestCase {
             XCTAssertEqual(status, 0)
 
             let files = try sftp.listFiles(in: "/tmp/你好")
-            XCTAssertEqual(files.count, 0)
-            XCTAssertEqual(Array(files.keys)[0], "/tmp/你好/hello")
+            XCTAssertEqual(files.count, 3)
+            XCTAssertTrue(Array(files.keys).contains("hello"))
 
             let destinationUrl = URL(fileURLWithPath: "/tmp/hello")
 
-            if try destinationUrl.checkResourceIsReachable() == true {
+            if FileManager.default.fileExists(atPath: destinationUrl.path) {
                 try FileManager.default.removeItem(at: destinationUrl)
             }
 
