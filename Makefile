@@ -1,3 +1,5 @@
+MACOSX_DEPLOYMENT_TARGET := $(vtool -show-build $(brew --prefix libssh2)/lib/libssh2.dylib | grep minos | awk '{ print $2 }')
+
 all:
 	@echo 'Available commands:'
 	@echo '	format		-- format code style with swiftformat'
@@ -12,3 +14,6 @@ check:
 
 test:
 	swift test
+
+build:
+	swift build
